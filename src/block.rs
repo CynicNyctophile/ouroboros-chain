@@ -1,31 +1,21 @@
-use std::time::SystemTime;
 pub struct Block {
-    timestamp: u128,
-    transactions: String,
-    prev_block_hash: String,
+    timestamp: i64,
+    transactions: Vec<Transaction>,
+    pre_block_hash: String,
     hash: String,
     height: usize,
-    nonce: i32,
-}
-
-pub struct Blockchain {
-    blocks: Vec<Block>,
+    nonce: i64,
 }
 
 impl Block {
-    pub fn new_block(data: String, prev_block_hash: String, height: usize) -> Result<Block> {
-        let timestamp = SystemTime::now()
-            .duration_since(SystemTime::UNIX_EPOCH)?
-            .as_millis();
+    pub fn new_block(pre_block_hash: String, transactions: &[Transaction], height: usize) -> Block {
         let mut block = Block {
-            timestamp: timestamp,
-            transactions: data,
-            prev_block_hash,
+            timestamp: crate::current_timestamp(),
+            pre_block_hash,
             hash: String::new(),
-            height,
+            transactions: transactions.to_vec(),
             nonce: 0,
+            height,
         };
-        block.run_proof_of_work()?;
-        Ok(block)
     }
 }
