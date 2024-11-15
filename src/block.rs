@@ -1,3 +1,5 @@
+use crate::{ProofOfWork, Transaction};
+
 pub struct Block {
     timestamp: i64,
     transactions: Vec<Transaction>,
